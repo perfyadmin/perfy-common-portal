@@ -72,7 +72,7 @@ export const PartnerCard = ({ p }: { p: Partner }) => {
             <PartnerFallback id={p.id} name={p.name} />
           )}
 
-          <div data-testid="partner-scrim" className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black via-black/80 to-transparent" />
+          {/* <div data-testid="partner-scrim" className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black via-black/60 to-transparent" /> */}
 
           <div className="absolute inset-x-0 bottom-0 z-10 p-5">
             <h3 data-testid="partner-name" className="text-[#ffffff] text-lg font-semibold font-display-perfy [text-shadow:0_2px_10px_rgba(0,0,0,0.85)]">{p.name}</h3>
