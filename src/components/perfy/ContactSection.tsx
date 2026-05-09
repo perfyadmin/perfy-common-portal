@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { RevealOnScroll } from "./RevealOnScroll";
 import { GlowButton } from "./GlowButton";
-import { supabase } from "@/integrations/supabase/client";
+import { sendContactMessage } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import contactCharacter from "@/assets/perfy-contact-character.png";
 
@@ -15,10 +15,7 @@ export const ContactSection = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.functions.invoke("send-sales-lead", {
-        body: { ...form, source: "perfy-contact" },
-      });
-      if (error) throw error;
+      await sendContactMessage({ ...form, source: "perfy-contact" });
       toast({ title: "Message sent", description: "Our team will reach out shortly." });
       setForm({ name: "", email: "", mobile: "", company: "", message: "" });
     } catch (err: any) {

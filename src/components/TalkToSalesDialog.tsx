@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Loader2, Send, CheckCircle2, MessageCircle } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { sendContactMessage } from "@/lib/api";
 
 interface Props {
   open: boolean;
@@ -62,10 +62,12 @@ export const TalkToSalesDialog = ({ open, onOpenChange, selectedModules, scope }
     setErrors({});
     setSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke("send-sales-lead", {
-        body: { ...result.data, selected_modules: selectedModules, scope },
+      await sendContactMessage({ 
+        ...result.data, 
+        selected_modules: selectedModules, 
+        scope, 
+        source: "talk-to-sales" 
       });
-      if (error) throw error;
       setDone(true);
       toast.success("Thanks! Our sales team will reach out shortly.");
     } catch (err) {
