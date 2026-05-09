@@ -3,30 +3,24 @@ import { supabase } from "@/integrations/supabase/client";
 import { PartnerCard, type Partner } from "./PartnerCard";
 import { RevealOnScroll } from "./RevealOnScroll";
 
+import { PARTNERS_DATA } from "@/data/partners";
+
 export const PartnersSection = () => {
-  const [partners, setPartners] = useState<Partner[]>([]);
+  const [partners, setPartners] = useState<Partner[]>(PARTNERS_DATA);
 
   useEffect(() => {
+    // We can still try to load from Supabase to merge or override, 
+    // but for now, we use the local PARTNERS_DATA as requested.
+    /*
     supabase
       .from("partners")
       .select("id,name,designation,company,bio,photo_url,linkedin_url,twitter_url,website_url")
       .eq("is_active", true)
       .order("sort_order", { ascending: true })
-      .order("created_at", { ascending: true })
       .then(({ data, error }) => {
-        if (error) {
-          console.error("[PartnersSection] failed to load partners", error);
-          return;
-        }
-
-        console.info("[PartnersSection] loaded partners", (data as Partner[] | null)?.map((partner) => ({
-          id: partner.id,
-          name: partner.name,
-          hasPhoto: Boolean(partner.photo_url),
-        })) || []);
-
-        setPartners((data as Partner[]) || []);
+        if (!error && data) setPartners(data as Partner[]);
       });
+    */
   }, []);
 
   const loop = partners.length ? [...partners, ...partners] : [];
